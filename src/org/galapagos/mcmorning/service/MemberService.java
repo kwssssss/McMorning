@@ -1,12 +1,18 @@
 package org.galapagos.mcmorning.service;
 
+import java.util.List;
+
 import org.galapagos.mcmorning.cli.input;
 import org.galapagos.mcmorning.dao.MemberDao;
 import org.galapagos.mcmorning.exception.UseridCountOverException;
 import org.galapagos.mcmorning.vo.Member;
 
 public class MemberService {
-	MemberDao dao = new MemberDao();
+	MemberDao dao;
+
+	public MemberService(MemberDao dao) {
+		this.dao = dao;
+	}
 
 	public void signUp() {
 		// Member 정보 입력
@@ -17,11 +23,32 @@ public class MemberService {
 		Member member;
 		try {
 			member = inputMember();
+			dao.add(member);
+
 		} catch (UseridCountOverException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println(e.getMessage());
+//			e.printStackTrace();
 		}
 
+	}
+
+	public Member login() {
+		System.out.println("[로그인]");
+		String userId = input.read("사용자 ID : ");
+		String password = input.read("비밀번호 : ");
+
+		// 로그인 검사
+
+		Member m = dao.findByUserid(userId);
+		if (m != null) { // 사용자 ID가 존재하는지 검사
+			if (password.equals(m.getPassword())) { // 비밀번호가 일치하는지 검사
+				// 로그인 성공
+				return m;
+			}
+		}
+
+		// 로그인 실패
+		return null;
 	}
 
 	public Member inputMember() throws UseridCountOverException {
@@ -68,5 +95,16 @@ public class MemberService {
 		}
 
 		throw new UseridCountOverException();
+	}
+
+	public void searchByName() {
+		System.out.println("[이름으로 찾기]");
+		String keyword = input.read("검색어 : ");
+
+		List<Member> list = dao.searchByname(keyword);
+		System.out.printf("검색 결과: %d건\n", list.size());
+		for (Member m : list) {
+			System.out.println(m);
+		}
 	}
 }
