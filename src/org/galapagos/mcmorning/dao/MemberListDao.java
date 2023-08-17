@@ -3,19 +3,22 @@ package org.galapagos.mcmorning.dao;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.galapagos.mcmorning.util.Serializer;
 import org.galapagos.mcmorning.vo.Member;
 
 // Member에 대한 CRUD
 public class MemberListDao implements MemberDao {
+	static final String FILE_PATH = "c:/temp/member_list.dat";
+
 	private List<Member> memberList;
 
 	public MemberListDao() {
 		memberList = new ArrayList<Member>();
-		memberList.add(new Member("구", "1234", "두루둥기기", "nine@naver.com"));
-		memberList.add(new Member("누", "1234", "니니", "noo@naver.com"));
-		memberList.add(new Member("두", "1234", "두루둥디디", "do@naver.com"));
-		memberList.add(new Member("루", "1234", "리리", "roo@naver.com"));
-		memberList.add(new Member("무", "1234", "미미", "nothing@naver.com"));
+//		memberList.add(new Member("구", "1234", "두루둥기기", "nine@naver.com"));
+//		memberList.add(new Member("누", "1234", "니니", "noo@naver.com"));
+//		memberList.add(new Member("두", "1234", "두루둥디디", "do@naver.com"));
+//		memberList.add(new Member("루", "1234", "리리", "roo@naver.com"));
+//		memberList.add(new Member("무", "1234", "미미", "nothing@naver.com"));
 	}
 
 	@Override
@@ -98,6 +101,19 @@ public class MemberListDao implements MemberDao {
 		}
 
 		return list; // null보다 list 값 리턴하는게 후속처리할때 편함, 곧 알수 있음(개봉박두)
+	}
+
+	@Override
+	public void save() throws Exception {
+		// memberList 직렬화
+		Serializer.save(FILE_PATH, memberList);
+
+	}
+
+	@Override
+	public void load() throws Exception {
+		// memberList 역직렬화
+		memberList = (List<Member>) Serializer.load(FILE_PATH);
 	};
 
 }

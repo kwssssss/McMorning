@@ -1,5 +1,7 @@
 package org.galapagos.mcmorning.vo;
 
+import java.io.Serializable;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,7 +13,7 @@ import lombok.ToString;
 @ToString
 @Getter
 @Setter
-public class Member {
+public class Member implements Serializable {
 	private String userid;
 	private String password;
 	private String name;

@@ -21,6 +21,10 @@ public interface MemberDao {
 
 	List<Member> searchByname(String name); // name: 홍길동, 길동, 길, 동.., 한 놈만 찾겠다 하면 리턴타입 member
 
+	void save() throws Exception;
+
+	void load() throws Exception;
+
 	List<Member> getMemberList();
 
 	void setMemberList(List<Member> memberList);
